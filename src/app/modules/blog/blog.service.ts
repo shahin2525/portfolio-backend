@@ -1,7 +1,7 @@
 import { TBlog } from './blog.interface';
 import { Blog } from './blog.model';
 
-const createListingIntoDB = async (payload: TBlog) => {
+const createBlogIntoDB = async (payload: TBlog) => {
   const result = await Blog.create(payload);
 
   return result;
@@ -28,8 +28,8 @@ const deleteBlogFromDB = async (id: string) => {
   return result;
 };
 
-export const ListingServices = {
-  createListingIntoDB,
+export const BlogServices = {
+  createBlogIntoDB,
   getAllBlogsFromDB,
   getSingleBlogFromDB,
   updateBlogFromDB,
