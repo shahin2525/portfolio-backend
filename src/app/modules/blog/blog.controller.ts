@@ -90,7 +90,7 @@ const getSingleBlog: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const ListingController = {
+export const BlogController = {
   createBlog,
   updateBlog,
   deleteBlog,
