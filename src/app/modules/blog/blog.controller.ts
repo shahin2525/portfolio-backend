@@ -2,12 +2,17 @@ import { RequestHandler } from 'express';
 
 import StatusCodes from 'http-status-codes';
 import { BlogServices } from './blog.service';
+import {
+  createBlogValidationSchema,
+  updateBlogValidationSchema,
+} from './blog.validation';
 const createBlog: RequestHandler = async (req, res, next) => {
   try {
     const data = req.body;
+    const validatedData = createBlogValidationSchema.parse({ body: data });
 
     // console.log(userData);
-    const result = await BlogServices.createBlogIntoDB(data);
+    const result = await BlogServices.createBlogIntoDB(validatedData.body);
     res.status(StatusCodes.OK).json({
       success: true,
       message: 'Blog created successfully',
@@ -41,7 +46,8 @@ const updateBlog: RequestHandler = async (req, res, next) => {
 
     const id = req.params.id;
     // console.log(userData);
-    const result = await BlogServices.updateBlogFromDB(id, data);
+    const validatedData = updateBlogValidationSchema.parse({ body: data });
+    const result = await BlogServices.updateBlogFromDB(id, validatedData.body);
     res.status(StatusCodes.OK).json({
       success: true,
       message: 'Blog updated successfully',
