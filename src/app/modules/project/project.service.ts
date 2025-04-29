@@ -1,3 +1,5 @@
+import status from 'http-status';
+import AppError from '../../error/appError';
 import { IProject } from './project.interface';
 import { Project } from './project.model';
 
@@ -13,10 +15,18 @@ export const getAllProjectsFromDB = async () => {
 };
 
 const getSingleProjectFromDB = async (id: string) => {
+  const projectId = await Project.findById(id);
+  if (!projectId) {
+    throw new AppError(status.NOT_FOUND, 'project id not found');
+  }
   const result = await Project.findById(id);
   return result;
 };
 const updateProjectFromDB = async (id: string, payload: Partial<IProject>) => {
+  const projectId = await Project.findById(id);
+  if (!projectId) {
+    throw new AppError(status.NOT_FOUND, 'project id not found');
+  }
   const result = await Project.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
@@ -24,6 +34,10 @@ const updateProjectFromDB = async (id: string, payload: Partial<IProject>) => {
   return result;
 };
 const deleteProjectFromDB = async (id: string) => {
+  const projectId = await Project.findById(id);
+  if (!projectId) {
+    throw new AppError(status.NOT_FOUND, 'project id not found');
+  }
   const result = await Project.findByIdAndDelete(id);
   return result;
 };
