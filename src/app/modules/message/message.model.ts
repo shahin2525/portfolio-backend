@@ -32,4 +32,4 @@ const ContactFormSchema = new Schema<TMessage>(
 );
 
 // Create and export the model
-export const Message = model<TMessage>('ContactForm', ContactFormSchema);
+export const Message = model<TMessage>('Message', ContactFormSchema);

@@ -11,11 +11,14 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
 
-app.use('/api', router);
+app.use('/api/', router);
 app.use(errorHandler);
+
 // not found route
-app.all('*', (req, res) => {
-  res.status(404).send('404! Page not found');
+
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+app.use((req, res, next) => {
+  res.status(404).render('404', { title: 'Page Not Found' });
 });
 
 export default app;

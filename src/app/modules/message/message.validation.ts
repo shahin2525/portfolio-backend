@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-export const createContactFormValidationSchema = z.object({
+// Base schema with strict validation (for CREATE)
+export const createMessageValidationSchema = z.object({
   name: z
     .string()
     .min(2, { message: 'Name must be at least 2 characters long' })
@@ -21,5 +22,20 @@ export const createContactFormValidationSchema = z.object({
     .trim(),
 });
 
-// Infer TypeScript type from Zod schema (matches IContactForm)
-export type ContactForm = z.infer<typeof createContactFormValidationSchema>;
+// Update schema (all fields optional, but validated if provided)
+export const updateMessageValidationSchema = createMessageValidationSchema
+  .partial()
+  .refine(
+    (data) => {
+      // At least one field should be provided for updates
+      return Object.keys(data).length > 0;
+    },
+    {
+      message: 'At least one field must be provided for update',
+      path: ['name', 'email', 'message'], // Shows error at root level
+    },
+  );
+
+// Infer TypeScript types
+export type CreateContactForm = z.infer<typeof createMessageValidationSchema>;
+export type UpdateContactForm = z.infer<typeof updateMessageValidationSchema>;

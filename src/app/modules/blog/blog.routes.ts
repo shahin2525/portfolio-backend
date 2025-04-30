@@ -3,7 +3,7 @@ import { BlogController } from './blog.controller';
 
 const router = Router();
 
-router.post(
+router.put(
   '/blogs/:id',
 
   BlogController.updateBlog,

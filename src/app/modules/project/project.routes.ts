@@ -3,7 +3,7 @@ import { ProjectController } from './project.controller';
 
 const router = Router();
 
-router.post(
+router.put(
   '/projects/:id',
 
   ProjectController.updateProject,
