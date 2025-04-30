@@ -5,7 +5,7 @@ import errorHandler from './app/middlewares/errorHandlers';
 const app = express();
 app.use(express.json());
 // app.use(cookieParser());
-app.use(cors({ origin: ['http://localhost:3000'] }));
+app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');
