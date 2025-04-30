@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MessageRoutes = void 0;
+const express_1 = require("express");
+const message_controller_1 = require("./message.controller");
+const router = (0, express_1.Router)();
+router.put('/messages/:id', message_controller_1.MessageController.updateMessage);
+router.delete('/messages/:id', message_controller_1.MessageController.deleteMessage);
+router.post('/messages/', message_controller_1.MessageController.createMessage);
+router.get('/messages', message_controller_1.MessageController.getAllMessages);
+router.get('/messages/:id', message_controller_1.MessageController.getSingleMessage);
+exports.MessageRoutes = router;
