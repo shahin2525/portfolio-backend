@@ -1,35 +1,76 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProjectValidationSchema = exports.createProjectValidationSchema = void 0;
+exports.updateProjectValidationSchema = exports.createProjectValidationSchema = exports.baseProjectSchema = void 0;
 const zod_1 = require("zod");
 // Base schema with all fields (strict for creation)
-const baseProjectSchema = zod_1.z
+// const baseProjectSchema = z
+//   .object({
+//     title: z.string().min(3, 'Title must be at least 3 characters').max(100),
+//     description: z
+//       .string()
+//       .min(50, 'Description must be at least 50 characters'),
+//     shortDescription: z.string().max(160).optional(),
+//     images: z.array(z.string().min(1)).url('Must be a valid URL')
+//       .regex(
+//         /\.(jpg|jpeg|png|webp|gif|svg)$/i,
+//         'Must be an image URL (jpg, png, webp, gif, svg)',
+//       ),
+//     liveLink: z.string().url('Must be a valid URL'),
+//     technologies: z
+//       .array(z.string().min(1))
+//       .nonempty('At least one technology is required'),
+//     features: z.array(z.string()).optional(),
+//     githubRepo: z.string().url('Must be a valid GitHub URL').optional(),
+//     status: z.enum(['active', 'archived', 'in-progress']).optional(),
+//   })
+//   .strict();
+exports.baseProjectSchema = zod_1.z
     .object({
-    title: zod_1.z.string().min(3, 'Title must be at least 3 characters').max(100),
+    title: zod_1.z
+        .string()
+        .min(3, 'Title must be at least 3 characters')
+        .max(100, 'Title cannot exceed 100 characters'),
     description: zod_1.z
         .string()
         .min(50, 'Description must be at least 50 characters'),
-    shortDescription: zod_1.z.string().max(160).optional(),
-    image: zod_1.z
+    shortDescription: zod_1.z
+        .string()
+        .max(160, 'Short description cannot exceed 160 characters')
+        .optional(),
+    images: zod_1.z
+        .array(zod_1.z
         .string()
         .url('Must be a valid URL')
-        .regex(/\.(jpg|jpeg|png|webp|gif|svg)$/i, 'Must be an image URL (jpg, png, webp, gif, svg)'),
+        .regex(/\.(jpg|jpeg|png|webp|gif|svg)$/i, 'Only image URLs are allowed (jpg, png, webp, gif, svg)'))
+        .min(1, 'At least one image is required'),
     liveLink: zod_1.z.string().url('Must be a valid URL'),
     technologies: zod_1.z
-        .array(zod_1.z.string().min(1))
-        .nonempty('At least one technology is required'),
-    features: zod_1.z.array(zod_1.z.string()).optional(),
-    githubRepo: zod_1.z.string().url('Must be a valid GitHub URL').optional(),
+        .array(zod_1.z.string().min(1, 'Technology name cannot be empty'))
+        .min(1, 'At least one technology is required'),
+    features: zod_1.z
+        .array(zod_1.z.string().min(1, 'Feature description cannot be empty'))
+        .optional(),
+    githubRepo: zod_1.z
+        .string()
+        .url('Must be a valid GitHub URL')
+        .refine((url) => url.includes('github.com'), {
+        message: 'Must be a GitHub repository URL',
+    }),
+    my_role: zod_1.z
+        .enum(['full stack developer', 'frontend developer', 'backend developer'])
+        .optional(),
     status: zod_1.z.enum(['active', 'archived', 'in-progress']).optional(),
+    createdAt: zod_1.z.coerce.date().optional(),
+    updatedAt: zod_1.z.coerce.date().optional(),
 })
     .strict();
 // Schema for CREATE (all required fields except optional ones)
 exports.createProjectValidationSchema = zod_1.z.object({
-    body: baseProjectSchema,
+    body: exports.baseProjectSchema,
 });
 // Schema for UPDATE (all fields optional, but with same validations when provided)
 exports.updateProjectValidationSchema = zod_1.z.object({
-    body: baseProjectSchema
+    body: exports.baseProjectSchema
         .partial()
         .strict()
         .refine((data) => Object.keys(data).length > 0, {

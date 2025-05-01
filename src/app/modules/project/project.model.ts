@@ -20,8 +20,8 @@ const ProjectSchema = new Schema<IProject>(
       type: String,
       maxlength: [160, 'Short description cannot exceed 160 characters'],
     },
-    image: {
-      type: String,
+    images: {
+      type: [String],
       required: [true, 'Image URL is required'],
       validate: {
         validator: (v: string) => /\.(jpe?g|png|webp|gif|svg)$/i.test(v),
@@ -56,6 +56,18 @@ const ProjectSchema = new Schema<IProject>(
           v ? /^https?:\/\/github\.com\/.+/i.test(v) : true,
         message: 'GitHub repo must be a valid GitHub URL',
       },
+    },
+    my_role: {
+      type: String,
+      enum: {
+        values: [
+          'full stack developer',
+          'frontend developer',
+          'backend developer',
+        ],
+        message: 'Status must be either active, archived, or in-progress',
+      },
+      default: 'frontend developer',
     },
     status: {
       type: String,

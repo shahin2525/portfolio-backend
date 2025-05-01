@@ -20,8 +20,8 @@ const ProjectSchema = new mongoose_1.Schema({
         type: String,
         maxlength: [160, 'Short description cannot exceed 160 characters'],
     },
-    image: {
-        type: String,
+    images: {
+        type: [String],
         required: [true, 'Image URL is required'],
         validate: {
             validator: (v) => /\.(jpe?g|png|webp|gif|svg)$/i.test(v),
@@ -54,6 +54,18 @@ const ProjectSchema = new mongoose_1.Schema({
             validator: (v) => v ? /^https?:\/\/github\.com\/.+/i.test(v) : true,
             message: 'GitHub repo must be a valid GitHub URL',
         },
+    },
+    my_role: {
+        type: String,
+        enum: {
+            values: [
+                'full stack developer',
+                'frontend developer',
+                'backend developer',
+            ],
+            message: 'Status must be either active, archived, or in-progress',
+        },
+        default: 'frontend developer',
     },
     status: {
         type: String,
