@@ -77,7 +77,16 @@ const ProjectSchema = new Schema<IProject>(
       },
       default: 'active',
     },
+    challengesFaced: {
+      type: String,
+      maxlength: [1000, 'Challenges section cannot exceed 1000 characters'],
+    },
+    futurePlan: {
+      type: String,
+      maxlength: [1000, 'Future plan cannot exceed 1000 characters'],
+    },
   },
+
   {
     timestamps: true, // Auto-add createdAt and updatedAt
     versionKey: false, // Disable __v field

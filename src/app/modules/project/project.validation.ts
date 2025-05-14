@@ -75,6 +75,15 @@ export const baseProjectSchema = z
     ]),
 
     status: z.enum(['active', 'archived', 'in-progress']).optional(),
+    challengesFaced: z
+      .string()
+      .max(1000, 'Challenges section cannot exceed 1000 characters')
+      .optional(),
+
+    futurePlan: z
+      .string()
+      .max(1000, 'Future plan cannot exceed 1000 characters')
+      .optional(),
 
     createdAt: z.coerce.date().optional(),
 

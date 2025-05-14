@@ -11,4 +11,6 @@ export interface IProject {
   githubRepo?: string; // Optional GitHub repository link
   my_role: 'full stack developer' | 'frontend developer' | 'backend developer';
   status?: 'active' | 'archived' | 'in-progress'; // Optional project status
+  challengesFaced?: string; // Optional description of challenges faced
+  futurePlan?: string;
 }

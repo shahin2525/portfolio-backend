@@ -56,9 +56,11 @@ exports.baseProjectSchema = zod_1.z
         .refine((url) => url.includes('github.com'), {
         message: 'Must be a GitHub repository URL',
     }),
-    my_role: zod_1.z
-        .enum(['full stack developer', 'frontend developer', 'backend developer'])
-        .optional(),
+    my_role: zod_1.z.enum([
+        'full stack developer',
+        'frontend developer',
+        'backend developer',
+    ]),
     status: zod_1.z.enum(['active', 'archived', 'in-progress']).optional(),
     createdAt: zod_1.z.coerce.date().optional(),
     updatedAt: zod_1.z.coerce.date().optional(),
